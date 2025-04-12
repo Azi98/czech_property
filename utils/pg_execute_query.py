@@ -1,22 +1,21 @@
-"""
-Просто выполняет переданный SQL-запрос и выводит результаты.
-"""
-
 import psycopg2
 from psycopg2 import sql
-import json
 
-def execute_query(sql_query: str) -> None:
-
-    
-    # Настраиваем параметры подключения к базе данных
+def execute_query(sql_query: str):
+    """
+    Выполняет переданный SQL-запрос и возвращает результаты
+    (если это SELECT-запрос) или строку о выполненном действии (INSERT, UPDATE, DELETE).
+    """
     DB_SETTINGS = {
-    "dbname": "property_project",
-    "user": "postgres",
-    "password": "250998",
-    "host": "localhost",
-    "port": 5432
-}
+        "dbname": "property_project",
+        "user": "postgres",
+        "password": "250998",
+        "host": "localhost",
+        "port": 5432
+    }
+
+    conn = None
+    cursor = None
 
     try:
         # Подключаемся к базе
@@ -25,26 +24,34 @@ def execute_query(sql_query: str) -> None:
 
         # Выполняем SQL-запрос
         cursor.execute(sql_query)
-        
-        # Если это SELECT-запрос, нам нужно получить результаты
+
+        # Определяем, является ли это SELECT-запросом
         if sql_query.strip().lower().startswith("select"):
             rows = cursor.fetchall()
-            for row in rows:
-                print(row)
+            return rows  # Возвращаем список кортежей
         else:
-            # Если это INSERT, UPDATE, DELETE и т.д., зафиксируем изменения
-            conn.commit()
-            print("Query executed and changes committed.")
-        
+            conn.commit()  # Для INSERT, UPDATE, DELETE
+            return "Query executed and changes committed."
+
     except psycopg2.Error as err:
-        print(f"Ошибка при работе с базой данных: {err}")
+        # В случае ошибки вернём её описание
+        return f"Ошибка при работе с базой данных: {err}"
 
     finally:
         # Закрываем соединение
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 if __name__ == "__main__":
-    execute_query("""SELECT price, layout 
-                    FROM properties
-                    LIMIT 10;""")
+    # Пример использования: SELECT
+    rows_result = execute_query("""SELECT price, layout 
+                                   FROM properties
+                                   LIMIT 10;""")
+    print("Результат запроса:", rows_result)
+
+    # Пример использования: INSERT
+    insert_result = execute_query("""INSERT INTO properties (price, layout) 
+                                    VALUES (12345, 'Studio');""")
+    print("Результат запроса:", insert_result)
