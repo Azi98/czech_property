@@ -1,0 +1,140 @@
+Перевод: 
+
+field_mapping = {
+    "Cena": "Price",
+    "Poplatky za služby": "ServiceFees",
+    "Poplatky za energie": "EnergyFees",
+    "Vratná kauce": "RefundableDeposit",
+    "Číslo inzerátu": "ListingID",
+
+    "Dispozice": "Layout",
+    "Vybaveno": "Furnished",
+    "Stav": "P_condition",
+    "Konstrukce budovy": "BuildingType",
+    "Vlastnictví": "P_Ownership",
+    "PENB": "EnergyEfficiency",
+    "Rekonstrukce": "Renovation",
+    "Provedení": "Execution",
+    "Stáří": "BuildingAge",
+    "Užitná plocha": "UsableArea",
+    "Umístění": "P_Location",
+    "Dostupné od": "AvailableFrom",
+    "Podlaží": "Floor",
+    "Počet_Podlaží": "TotalFloors",
+    "Cena za jednotku": "PricePerUnit",
+    "Vytápění": "Heating",
+
+    "Balkón": "Balcony",
+    "Výtah": "Elevator",
+    "Lodžie": "Loggia",
+    "Parkování": "Parking",
+    "Garáž": "Garage",
+    "Bezbariérový přístup": "BarrierFreeAccess",
+    "Sklep": "Cellar",
+    "Terasa": "Terrace",
+    "Předzahrádka": "FrontGarden",
+
+    "Ulice": "Street",
+    "Město": "City",
+    "Městská část": "District",
+    "Kraj": "Region"
+}
+
+
+
+CREATE TABLE [dbo].[Properties]
+(
+    -- Автоинкрементируемый идентификатор,
+    -- который будет основным ключом таблицы
+    PropertiesID       INT IDENTITY(1,1) NOT NULL,
+
+    -- Внешний идентификатор
+    ListingID          VARCHAR(15)  NOT NULL,
+
+    Price              INT          NOT NULL,  
+    ServiceFees        INT          NULL,
+    EnergyFees         INT          NULL,
+    RefundableDeposit  INT          NULL,
+    AdministrativeFee  INT          NULL,
+    Layout             VARCHAR(10)  NULL,
+    Furnished          VARCHAR(15)  NULL,
+    P_condition        VARCHAR(20)  NULL,   
+    BuildingType       VARCHAR(15)  NULL,
+    P_Ownership        VARCHAR(15)  NULL,
+    EnergyEfficiency   VARCHAR(20)  NULL,
+    Renovation         VARCHAR(50)  NULL,
+    Execution          VARCHAR(30)  NULL,
+    BuildingAge        VARCHAR(20)  NULL,
+    UsableArea         INT          NULL,
+    P_Location         VARCHAR(30)  NULL,   
+    AvailableFrom      DATE         NULL,
+    Floor              INT          NULL,
+    TotalFloors        INT          NULL,
+    PricePerUnit       INT          NULL,
+    Heating            VARCHAR(30)  NULL,
+    Balcony            BIT          NULL,
+    Elevator           BIT          NULL,
+    Loggia             BIT          NULL,
+    Parking            BIT          NULL,
+    Street             VARCHAR(100) NULL,
+    City               VARCHAR(50)  NULL,
+    District           VARCHAR(50)  NULL,
+    Region             VARCHAR(50)  NULL,
+    Garage             BIT          NULL,
+    BarrierFreeAccess  BIT          NULL,
+    Cellar             BIT          NULL,
+    Terrace            BIT          NULL,
+    FrontGarden        BIT          NULL,
+
+    -- Определяем автоинкрементируемый столбец как основной ключ
+    CONSTRAINT PK_Properties PRIMARY KEY (PropertiesID),
+
+    -- Делаем внешний идентификатор уникальным
+    CONSTRAINT UQ_Properties_ListingID UNIQUE (ListingID)
+);
+
+Postgree:
+
+CREATE TABLE Properties (
+    -- Автоинкрементируемый идентификатор,
+    -- который будет основным ключом таблицы
+    PropertiesID SERIAL PRIMARY KEY,
+
+    -- Внешний идентификатор
+    ListingID VARCHAR(15) NOT NULL UNIQUE,
+
+    Price INT,  
+    ServiceFees INT,
+    EnergyFees INT,
+    RefundableDeposit INT,
+    AdministrativeFee INT,
+    Layout VARCHAR(10),
+    Furnished VARCHAR(15),
+    P_condition VARCHAR(20),   
+    BuildingType VARCHAR(15),
+    P_Ownership VARCHAR(15),
+    EnergyEfficiency VARCHAR(50),
+    Renovation VARCHAR(50),
+    Execution VARCHAR(30),
+    BuildingAge VARCHAR(20),
+    UsableArea INT,
+    P_Location VARCHAR(30),   
+    AvailableFrom DATE,
+    Floor INT,
+    TotalFloors INT,
+    PricePerUnit INT,
+    Heating VARCHAR(30),
+    Balcony BOOLEAN,
+    Elevator BOOLEAN,
+    Loggia BOOLEAN,
+    Parking BOOLEAN,
+    Street VARCHAR(100),
+    City VARCHAR(100),
+    District VARCHAR(100),
+    Region VARCHAR(100),
+    Garage BOOLEAN,
+    BarrierFreeAccess BOOLEAN,
+    Cellar BOOLEAN,
+    Terrace BOOLEAN,
+    FrontGarden BOOLEAN
+);

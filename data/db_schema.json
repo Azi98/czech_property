@@ -1,0 +1,42 @@
+{
+  "Properties": {
+    "columns": [
+      {"name": "PropertiesID", "type": "SERIAL", "description": "Auto-incremented primary key for the table"},
+      {"name": "ListingID", "type": "VARCHAR(15)", "description": "External unique identifier for the property"},
+      {"name": "Price", "type": "INT", "description": "Price of the property"},
+      {"name": "ServiceFees", "type": "INT", "description": "Service fees for the property"},
+      {"name": "EnergyFees", "type": "INT", "description": "Energy fees for the property"},
+      {"name": "RefundableDeposit", "type": "INT", "description": "Refundable deposit amount"},
+      {"name": "AdministrativeFee", "type": "INT", "description": "Administrative fees for the property"},
+      {"name": "Layout", "type": "VARCHAR(10)", "description": "Layout of the property (options: Garsoniéra, 1+kk, 1+1, 2+1, 2+kk, 3+kk, 3+1, 4+kk, 4+1, 5+kk, 5+1, 6+kk, 6+1))"},
+      {"name": "Furnished", "type": "VARCHAR(15)", "description": "Furnishing status (options: Cástecne, Vybaveno, Null)"},
+      {"name": "P_condition", "type": "VARCHAR(20)", "description": "Condition of the property (options: Novostavba, Dobrý, Velmi dobrý, Po rekonstrukci)"},
+      {"name": "BuildingType", "type": "VARCHAR(15)", "description": "Type of building (options: Cihla, Smíšená, Panel)"},
+      {"name": "P_Ownership", "type": "VARCHAR(15)", "description": "Ownership type (options: Osobní, Družstevní)"},
+      {"name": "EnergyEfficiency", "type": "VARCHAR(20)", "description": "Energy efficiency class (options: A - Mimořádně úsporná, B - Velmi úsporná, C - Úsporná, D – méně úsporná, E - Nehospodárná, F – velmi nehospodárná, G - Mimořádně nehospodárná)"},
+      {"name": "Renovation", "type": "VARCHAR(50)", "description": "Renovation details (options: Interiér, Kompletní, Exteriér)"},
+      {"name": "Execution", "type": "VARCHAR(30)", "description": "Execution details (options: Standardní, Luxusní)"},
+      {"name": "BuildingAge", "type": "VARCHAR(20)", "description": "Age of the building (options: Nad 50 let, Nad 50let, Do 10 let, Do 10 let, 10 - 30 let)"},
+      {"name": "UsableArea", "type": "INT", "description": "Usable area in square meters"},
+      {"name": "P_Location", "type": "VARCHAR(30)", "description": "Location (options: Klidná cást, Centrum, Okraj, Sídlište, Rušná cást)"},
+      {"name": "AvailableFrom", "type": "DATE", "description": "Availability date (e.g. 2025-01-03)"},
+      {"name": "Floor", "type": "INT", "description": "Floor number"},
+      {"name": "TotalFloors", "type": "INT", "description": "Total number of floors"},
+      {"name": "PricePerUnit", "type": "INT", "description": "Price per unit area"},
+      {"name": "Heating", "type": "VARCHAR(30)", "description": "Type of heating (options: Elektrické, Plynové, Ústrední, Vzdálené)"},
+      {"name": "Balcony", "type": "BOOLEAN", "description": "Has balcony (TRUE/[null])"},
+      {"name": "Elevator", "type": "BOOLEAN", "description": "Has elevator (TRUE/[null])"},
+      {"name": "Loggia", "type": "BOOLEAN", "description": "Has loggia (TRUE/[null])"},
+      {"name": "Parking", "type": "BOOLEAN", "description": "Has parking (TRUE/[null])"},
+      {"name": "Street", "type": "VARCHAR(100)", "description": "Street (options: all streets in Czech Republic in Czech language - e.g. Rímská, Kaštanová)"},
+      {"name": "City", "type": "VARCHAR(50)", "description": "City (options: all cities in Czech Republic in Czech language - e.g. Praha, Hradec Králové, Pardubice)"},
+      {"name": "District", "type": "VARCHAR(50)", "description": "District (options: all districs in Czech Republic in Czech language - e.g. Vinor, Kyje, Vinohrady)"},
+      {"name": "Region", "type": "VARCHAR(50)", "description": "Region (options: all regions (kraj) in Czech Republic in Czech language - e.g. Olomoucký kraj, Jihomoravský kraj, Moravskoslezský kraj)"},
+      {"name": "Garage", "type": "BOOLEAN", "description": "Has garage (TRUE/[null])"},
+      {"name": "BarrierFreeAccess", "type": "BOOLEAN", "description": "Has barrier-free access (TRUE/[null])"},
+      {"name": "Cellar", "type": "BOOLEAN", "description": "Has cellar (TRUE/[null])"},
+      {"name": "Terrace", "type": "BOOLEAN", "description": "Has terrace (TRUE/[null])"},
+      {"name": "FrontGarden", "type": "BOOLEAN", "description": "Has front garden (TRUE/[null])"}
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+__pycache__/
+venv_property_project/
+.env
+*.log
+to_do.txt
