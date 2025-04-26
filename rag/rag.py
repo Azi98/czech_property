@@ -1,6 +1,6 @@
 """Тут уже рабочий код с использованием RAG. Нужный вопрос задай в переменную result"""
 
-from typing_extensions import List, TypedDict
+from typing_extensions import List, TypedDict, Annotated
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain.prompts import PromptTemplate
@@ -10,6 +10,8 @@ import os
 import getpass
 from langchain_core.documents import Document
 from langchain.chat_models import init_chat_model
+import json
+from pydantic import ValidationError, BaseModel, Field
 
 # Load variables from the .env file
 load_dotenv()
@@ -70,12 +72,19 @@ vector_store = Chroma(
     persist_directory="./chroma_langchain_db",
 )
 
+# Desired schema for response
+class AnswerWithSources(BaseModel):
+    """An answer to the question, with sources."""
+
+    answer: str
+    sources: List[str] = Field(description="List of sources used for the answer one by one")
+
 # Define state for application
 class State(TypedDict):
     question: str
     optimized_question: str
     context: List[Document]
-    answer: str
+    answer: AnswerWithSources
 
 
 def optimize(state: State):
@@ -92,8 +101,9 @@ def retrieve(state: State):
 def generate(state: State):
     docs_content = "\n\n".join(doc.page_content for doc in state["context"])
     messages = prompt_2.invoke({"question": state["question"], "context": docs_content})
-    response = llm.invoke(messages)
-    return {"answer": response.content}
+    structured_llm = llm.with_structured_output(AnswerWithSources)
+    response = structured_llm.invoke(messages)
+    return {"answer": response}
 
 
 graph_builder = StateGraph(State).add_sequence([optimize, retrieve, generate])
@@ -103,6 +113,6 @@ graph = graph_builder.compile()
 result = graph.invoke({"question": "Может ли арендодатель поднять аренду в середине контракта?"})
 #result = graph.invoke({"question": "Какая самая дорогая кварира в Праге?"})
 
-print(f'Context: {result["context"]}\n\n')
-print(f'Answer: {result["answer"]}')
-print(f'Optimized question: {result["optimized_question"]}')
+
+print(result["answer"].model_dump())
+
