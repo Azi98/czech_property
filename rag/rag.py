@@ -101,8 +101,7 @@ def retrieve(state: State):
 def generate(state: State):
     docs_content = "\n\n".join(doc.page_content for doc in state["context"])
     messages = prompt_2.invoke({"question": state["question"], "context": docs_content})
-    structured_llm = llm.with_structured_output(AnswerWithSources)
-    response = structured_llm.invoke(messages)
+    response = llm.invoke(messages)
     return {"answer": response}
 
 
