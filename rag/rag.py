@@ -72,19 +72,12 @@ vector_store = Chroma(
     persist_directory="./chroma_langchain_db",
 )
 
-# Desired schema for response
-class AnswerWithSources(BaseModel):
-    """An answer to the question, with sources."""
-
-    answer: str
-    sources: List[str] = Field(description="List of sources used for the answer one by one")
-
 # Define state for application
 class State(TypedDict):
     question: str
     optimized_question: str
     context: List[Document]
-    answer: AnswerWithSources
+    answer: str
 
 
 def optimize(state: State):
@@ -102,7 +95,7 @@ def generate(state: State):
     docs_content = "\n\n".join(doc.page_content for doc in state["context"])
     messages = prompt_2.invoke({"question": state["question"], "context": docs_content})
     response = llm.invoke(messages)
-    return {"answer": response}
+    return {"answer": response.content}
 
 
 graph_builder = StateGraph(State).add_sequence([optimize, retrieve, generate])
@@ -112,7 +105,7 @@ graph = graph_builder.compile()
 result = graph.invoke({"question": "Может ли арендодатель поднять аренду в середине контракта?"})
 #result = graph.invoke({"question": "Какая самая дорогая кварира в Праге?"})
 
-
-print(result["answer"])
-#salam
+print(f'Context: {result["context"]}\n\n')
+print(f'Answer: {result["answer"]}')
+print(f'Optimized question: {result["optimized_question"]}')
 
