@@ -113,5 +113,5 @@ result = graph.invoke({"question": "Может ли арендодатель п
 #result = graph.invoke({"question": "Какая самая дорогая кварира в Праге?"})
 
 
-print(result["answer"].model_dump())
+print(result["answer"])
 
