@@ -114,4 +114,5 @@ result = graph.invoke({"question": "Может ли арендодатель п
 
 
 print(result["answer"])
+#salam
 
