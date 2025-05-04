@@ -20,7 +20,7 @@ load_dotenv()
 if not os.environ.get("OPENAI_API_KEY"):
   os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter API key for OpenAI: ")
 
-file_path='./czech_civil_code.json'
+file_path='./extended_law_resources.json'
 if not os.path.exists(file_path):
     raise FileNotFoundError(f"File not found at path: {file_path}")
 
@@ -28,9 +28,9 @@ data = json.loads(Path(file_path).read_text()) #загрузка данных и
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 
 vector_store = Chroma(
-    collection_name="czech_civil_code_collection",
+    collection_name="law_resources",
     embedding_function=embeddings,
-    persist_directory="./chroma_langchain_db",  # Where to save data locally, remove if not necessary
+    persist_directory="./chroma_langchain_db"
 )
 
 # Define the metadata extraction function.

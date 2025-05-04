@@ -67,7 +67,7 @@ Answer:
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 vector_store = Chroma(
-    collection_name="czech_civil_code_collection",
+    collection_name="law_resources",
     embedding_function=embeddings,
     persist_directory="./chroma_langchain_db",
 )
@@ -87,13 +87,13 @@ def optimize(state: State):
 
 # Define application steps
 def retrieve(state: State):
-    retrieved_docs = vector_store.similarity_search(state["question"])
+    retrieved_docs = vector_store.similarity_search(state["optimized_question"])
     return {"context": retrieved_docs}
 
 
 def generate(state: State):
     docs_content = "\n\n".join(doc.page_content for doc in state["context"])
-    messages = prompt_2.invoke({"question": state["question"], "context": docs_content})
+    messages = prompt_2.invoke({"question": state["optimized_question"], "context": docs_content})
     response = llm.invoke(messages)
     return {"answer": response.content}
 
@@ -102,10 +102,7 @@ graph_builder = StateGraph(State).add_sequence([optimize, retrieve, generate])
 graph_builder.add_edge(START, "optimize")
 graph = graph_builder.compile()
 
-result = graph.invoke({"question": "Может ли арендодатель поднять аренду в середине контракта?"})
-#result = graph.invoke({"question": "Какая самая дорогая кварира в Праге?"})
+result = graph.invoke({"question": "Может ли арендодатель повысить мне размер ежемесячных платежей за воду и отопление просто так?"})
 
-print(f'Context: {result["context"]}\n\n')
-print(f'Answer: {result["answer"]}')
-print(f'Optimized question: {result["optimized_question"]}')
+print(result["context"])
 
