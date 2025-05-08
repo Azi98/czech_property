@@ -3,7 +3,7 @@
     "columns": [
       {"name": "PropertiesID", "type": "SERIAL", "description": "Auto-incremented primary key for the table"},
       {"name": "ListingID", "type": "VARCHAR(15)", "description": "External unique identifier for the property"},
-      {"name": "Price", "type": "INT", "description": "Price of the property"},
+      {"name": "Price", "type": "INT", "description": "Price of the property in CZK"},
       {"name": "ServiceFees", "type": "INT", "description": "Service fees for the property"},
       {"name": "EnergyFees", "type": "INT", "description": "Energy fees for the property"},
       {"name": "RefundableDeposit", "type": "INT", "description": "Refundable deposit amount"},
