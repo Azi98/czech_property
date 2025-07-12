@@ -102,7 +102,9 @@ graph_builder = StateGraph(State).add_sequence([optimize, retrieve, generate])
 graph_builder.add_edge(START, "optimize")
 graph = graph_builder.compile()
 
-result = graph.invoke({"question": "Может ли арендодатель повысить мне размер ежемесячных платежей за воду и отопление просто так?"})
+result = graph.invoke({"question": "Kdo má opravit poruchu v bytě, když oprava stojí víc než 2000 korun – pronajímatel nebo nájemce?"})
 
-print(result["context"])
-
+context = [f"Context: {i.page_content}" for i in result["context"]]
+print(*context, sep="\n\n", end="\n\n")
+print("Answer:", result["answer"])
+print("Answer:", result["optimized_question"])

@@ -111,6 +111,6 @@ graph_builder.add_edge(START, "write_query")
 graph = graph_builder.compile()
 
 for step in graph.stream(
-    {"question": "Назови среднюю цену трехкомнатных квартир в Праге"}, stream_mode="updates"
+    {"question": "Jaké je průměrné nájemné za zařízený byt 2+kk nebo 1+1 v Praze?"}, stream_mode="updates"
 ):
     print(step)
