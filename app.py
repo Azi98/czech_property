@@ -1,6 +1,6 @@
 from flask import Flask
-import utils.create_request_llm as cr
-import utils.pg_execute_query as eq
+import webscraper.create_request_llm as cr
+import webscraper.pg_execute_query as eq
 
 app = Flask(__name__)
 

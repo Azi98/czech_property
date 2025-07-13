@@ -12,6 +12,7 @@ from langchain.prompts import PromptTemplate
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 import getpass
 import json
@@ -29,7 +30,11 @@ DB_SETTINGS = {
 
 db = SQLDatabase.from_uri(f"postgresql://{DB_SETTINGS['user']}:{DB_SETTINGS['password']}@{DB_SETTINGS['host']}:{DB_SETTINGS['port']}/{DB_SETTINGS['dbname']}")
 
-with open("../data/db_schema.json", "r", encoding="utf-8") as f:
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+DB_SCHEMA_JSON = DATA_DIR / "db_schema.json"
+
+with DB_SCHEMA_JSON.open("r", encoding="utf-8") as f:
         db_schema = json.load(f)
         db_schema_str = json.dumps(db_schema, ensure_ascii=False, indent=2)
 
