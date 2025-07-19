@@ -6,15 +6,11 @@ from typing_extensions import TypedDict, Literal, List
 from langgraph.graph import StateGraph, START, END
 from langchain_core.documents import Document
 from pydantic import BaseModel, Field
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain.prompts import PromptTemplate
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import getpass
 import json
 import re
 #Не забудь изменить путь на абсолютный
@@ -49,6 +45,7 @@ class Route(BaseModel):
     step: Literal["market_insight", "legal_help", "no_info"] = Field(
         None, description="The next step in the routing process"
     )
+    reason: str = Field(..., description="Reason for choosing 'no_info'")
 
 llm = init_chat_model("gpt-4o-mini", model_provider="openai")
 
@@ -63,6 +60,7 @@ vector_store = Chroma(
 class State(TypedDict):
     question: str
     decision: str
+    reason: str
     optimized_question: str
     context: List[Document]
     query: str
@@ -108,15 +106,16 @@ def generate(state: State):
     return {"answer": response.content}
 
 def no_info_print(state: State):
-    print("Cannot answer your question based on information I have")
+    prompt = prompts.no_info_answer.invoke({"question": state["question"], "reason": state["reason"]})
+    response = llm.invoke(prompt)
+    return {"answer": response.content}
 
 def llm_call_router(state: State):
     """Route the input to the appropriate node"""
     router = llm.with_structured_output(Route)
     prompt = prompts.route_logic.invoke({"question": state["question"]})
     decision = router.invoke(prompt)
-
-    return {"decision": decision.step}
+    return {"decision": decision.step, "reason": decision.reason}
 
 # Conditional edge function to route to the appropriate node
 def route_decision(state: State):
@@ -163,5 +162,5 @@ graph.add_edge("no_info_print", END)
 
 
 router_workflow = graph.compile()
-state = router_workflow.invoke({"question": "Kdo má opravit poruchu v bytě, když oprava stojí víc než 2000 korun – pronajímatel nebo nájemce?"})
+state = router_workflow.invoke({"question": "who is the president of USA?"})
 print(state)
